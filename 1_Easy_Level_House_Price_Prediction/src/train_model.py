@@ -60,3 +60,49 @@ joblib.dump(model, model_path)
 
 print(f"\nModel Saved Successfully!")
 print(model_path)    
+
+# Load original dataset for readable prediction report
+original_df = pd.read_csv(
+    r"E:\aadyamtalentconsultancy_Aashutosh\1_Easy_Level_House_Price_Prediction\dataset\House_Rent_Dataset.csv"
+)
+
+# Same split as model training
+_, original_test = train_test_split(
+    original_df,
+    test_size=0.2,
+    random_state=42
+)
+
+# Reset indexes
+original_test = original_test.reset_index(drop=True)
+y_test = y_test.reset_index(drop=True)
+
+# Create prediction report
+results_df = pd.DataFrame({
+    "BHK": original_test["BHK"],
+    "Size": original_test["Size"],
+    "Bathroom": original_test["Bathroom"],
+    "City": original_test["City"],
+    "Furnishing_Status": original_test["Furnishing Status"],
+    "Tenant_Preferred": original_test["Tenant Preferred"],
+    "Area_Type": original_test["Area Type"],
+    "Actual_Rent": y_test,
+    "Predicted_Rent": predictions.round(2)
+})
+
+# Prediction error
+results_df["Difference"] = (
+    results_df["Actual_Rent"] -
+    results_df["Predicted_Rent"]
+).round(2)
+
+# Save file
+results_path = r"E:\aadyamtalentconsultancy_Aashutosh\1_Easy_Level_House_Price_Prediction\outputs\prediction_results.csv"
+
+results_df.to_csv(results_path, index=False)
+
+print("\nPrediction Results Saved Successfully!")
+print(results_path)
+
+print("\nTop 10 Predictions:")
+print(results_df.head(10))
