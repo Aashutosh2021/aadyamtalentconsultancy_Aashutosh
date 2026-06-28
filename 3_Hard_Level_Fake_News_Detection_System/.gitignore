@@ -1,0 +1,5 @@
+# Large datasets
+3_Hard_Level_Fake_News_Detection_System/dataset/
+
+# Generated large files
+3_Hard_Level_Fake_News_Detection_System/outputs/cleaned_news_dataset.csv
